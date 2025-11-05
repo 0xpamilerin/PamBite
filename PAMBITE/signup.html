@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PamBite | Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-screen flex items-center justify-center bg-gray-100 overflow-x-hidden">
+
+    <!-- Background with Hero Image -->
+    <div class="absolute inset-0">
+      <img src="img/bg-img.avif" alt="Food Background" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-70"></div> <!-- Dark overlay -->
+    </div>
+
+    <!-- Split Card -->
+    <div class="relative z-10 flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden mx-4">
+      
+      <!-- Left Side (Banner) -->
+      <div class="hidden md:flex md:w-1/2 text-white relative">
+        <!-- Background Image -->
+        <img src="img/chef.png" alt="Chef" class="absolute inset-0 w-full h-full object-cover">
+
+        <!-- Text with Overlay -->
+        <div class="absolute bottom-0 left-0 right-0 bg-black/30 p-6 text-center">
+          <h2 class="text-3xl font-bold mb-3">
+            Join <span class="text-yellow-300">PamBite</span>
+          </h2>
+          <p class="text-lg">
+            Sign up today and enjoy delicious meals at your fingertips 🍴
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side (Form) -->
+      <div class="w-full md:w-1/2 p-8 bg-white">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Create Account</h2>
+        <form id="signupForm" class="space-y-5">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+            <input type="text" id="name" name="name" required
+              class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
+            <p id="nameError" class="text-red-500 text-sm mt-1 hidden">Name must contain only letters and spaces.</p>
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" name="email" required
+              class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
+            <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Enter a valid email (e.g., user@example.com).</p>
+          </div>
+
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="password" name="password" required
+              class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
+            <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">
+              Password must be at least 8 chars, include 1 uppercase, 1 number, and 1 special char.
+            </p>
+          </div>
+
+          <div>
+            <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required
+              class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none">
+            <p id="confirmError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match.</p>
+          </div>
+
+          <button type="submit"
+            class="w-full bg-orange-600 text-white font-medium py-2 rounded-lg hover:bg-orange-700 transition">Sign Up</button>
+        </form>
+
+        <!-- Footer Links -->
+        <div class="mt-6 text-center text-sm text-gray-600">
+          <p>Already have an account? 
+            <a href="login.html" class="text-orange-600 font-semibold hover:underline">Log In</a>
+          </p>
+        </div>
+        <div class="mt-6 text-center text-sm text-gray-600">
+          <p> 
+            <a href="index.html" class="text-orange-600 font-semibold hover:underline">Return</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="signup.js"></script>
+  </body>
+</html>

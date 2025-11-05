@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PamBite Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-800 text-white h-screen p-6">
+    <h2 class="text-2xl font-bold mb-8">PamBite Admin</h2>
+    <nav>
+      <ul class="space-y-4">
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">📊 Dashboard</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">🛒 Orders</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">🍽️ Menu</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">👥 Users</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">📈 Reports</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-orange-600">⚙️ Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+    <!-- Top Bar -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-700">Dashboard</h1>
+      <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Logout</button>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-lg font-semibold">Total Orders</h2>
+        <p class="text-3xl font-bold text-orange-600">2</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-lg font-semibold">Revenue</h2>
+        <p class="text-3xl font-bold text-green-600">$18</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h2 class="text-lg font-semibold">Customers</h2>
+        <p class="text-3xl font-bold text-blue-600">2</p>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="mt-10 bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4">Recent Orders</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full border">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-4 py-2 text-left">Order ID</th>
+              <th class="px-4 py-2 text-left">Customer</th>
+              <th class="px-4 py-2 text-left">Items</th>
+              <th class="px-4 py-2 text-left">Total</th>
+              <th class="px-4 py-2 text-left">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t">
+              <td class="px-4 py-2">#001</td>
+              <td class="px-4 py-2">John Doe</td>
+              <td class="px-4 py-2">Canapes</td>
+              <td class="px-4 py-2">$5.99</td>
+              <td class="px-4 py-2"><span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded text-sm">Pending</span></td>
+            </tr>
+            <tr class="border-t">
+              <td class="px-4 py-2">#002</td>
+              <td class="px-4 py-2">Jane Smith</td>
+              <td class="px-4 py-2">Fried Rice</td>
+              <td class="px-4 py-2">$10.50</td>
+              <td class="px-4 py-2"><span class="bg-green-200 text-green-800 px-2 py-1 rounded text-sm">Completed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

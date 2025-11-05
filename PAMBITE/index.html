@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <link rel="stylesheet" href="style.css">
+        <title>PamBite</title>
+    </head>
+    <body class="bg-gray-100 overflow-x-hidden">
+        <nav class="bg-white shadow-md fixed w-full left-0 top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-14">
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <h1 class="text-2xl font-bold text-green-600">
+                    Ade<span class="text-orange-500">k</span>
+                    </h1>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#HOME" class="text-gray-700 hover:text-green-600">Home</a>
+                    <a href="#MENU" class="text-gray-700 hover:text-green-600">Menu</a>
+                    <a href="#ABOUT" class="text-gray-700 hover:text-green-600">About</a>
+                    <a href="#CONTACT" class="text-gray-700 hover:text-green-600">Contact</a>
+                </div>
+
+                <!-- Search + Login (Desktop only) -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <!-- Search Bar -->
+                    <div class="flex items-center space-x-2">
+                    <input type="text" placeholder="Search meals..."
+                        class="px-3 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        id="menu-search">
+                    <button id="search-btn"
+                        class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                        Search
+                    </button>
+                    </div>
+                    <!-- Add inside navbar -->
+                    <button id="cart-btn" class="relative flex items-center space-x-2">
+                        <span>🛒</span>
+                        <span class="hidden sm:inline">Cart</span> <!-- Text shows on sm (640px+) screens -->
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 rounded-full">0</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <div class="w-full max-w-[220px] sm:max-w-xs md:max-w-sm mx-auto px-2">
+                        <input
+                            type="text"
+                            placeholder="Search meals..."
+                            id="mobile-menu-search"
+                            class="w-full py-2 px-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm"
+                        />
+                    </div>
+
+                    <button id="menu-btn" class="text-gray-700 focus:outline-none z-50 relative">
+                        <svg id="hamburger" class="w-6 h-6" fill="none" stroke="black" viewBox="0 0 24 24">
+                        <path id="line1" class="hamburger-line" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16" />
+                        <path id="line2" class="hamburger-line" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16" />
+                        <path id="line3" class="hamburger-line" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+         <!-- Overlay -->
+        <div id="overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden flex-col bg-white shadow-lg md:hidden fixed top-0 right-0 h-full w-1/2 py-6 space-y-6 z-40">
+            <a href="#HOME" class="block text-gray-700 hover:text-green-600 px-6">Home</a>
+            <a href="#MENU" class="block text-gray-700 hover:text-green-600 px-6">Menu</a>
+            <a href="#ABOUT" class="block text-gray-700 hover:text-green-600 px-6">About</a>
+            <a href="#CONTACT" class="block text-gray-700 hover:text-green-600 px-6">Contact</a>
+            <button class="block text-orange-600 font-medium px-6 mobile-cart-btn">Cart</button>
+        </div>
+
+        <!-- Search Results Popup -->
+        <div id="search-results" class="fixed top-20 left-5 bg-white shadow-lg rounded-lg w-64 hidden z-50 border border-gray-200">
+            <div id="search-results-list" class="p-4 space-y-3">
+                <!-- Search results will appear here dynamically -->
+            </div>
+        </div>
+
+        <!-- Add the mobile cart markup here -->
+        <div id="mobile-cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+        <div id="mobile-cart" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-in-out z-50">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 class="text-lg font-semibold text-gray-800">Your Cart</h3>
+                <button id="close-mobile-cart" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <!-- Cart Items -->
+            <div id="mobile-cart-items" class="max-h-64 overflow-y-auto p-4 space-y-4">
+                <p class="text-gray-500 text-center">Your cart is empty.</p>
+            </div>
+            <!-- Footer -->
+            <div class="border-t p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="font-medium">Total:</span>
+                    <span id="mobile-cart-total" class="text-orange-500 font-bold">$0.00</span>
+                </div>
+                <a href="checkout.html">
+                    <button class="w-full bg-orange-500 text-white py-2 rounded-full font-semibold hover:bg-orange-600 transition">Checkout</button>
+                </a>
+            </div>
+        </div>
+
+        <!--HERO SECTION-->
+        <section class="relative bg-cover bg-center h-screen" style="background-image: url(img/bg-img.avif);">
+            <div class="absolute inset-0 bg-black bg-opacity-50" id="HOME"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+                <h1 class="text-5xl font-bold mb-4" data-aos="fade-up" data-aos-duration="1000">
+                    Welcome to <span class="text-orange-400">PAMBITE</span>
+                </h1>
+                <p class="text-lg mb-8" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                    Delicious meals made just for you 🍴
+                </p>
+
+                <div class="flex space-x-4">
+                    <a href="login.html"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full font-medium shadow-lg transition"
+                        data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+                        Login
+                    </a>
+                    <a href="signup.html"
+                        class="bg-white hover:bg-gray-100 text-orange-600 px-6 py-3 rounded-full font-medium shadow-lg transition"
+                        data-aos="fade-up" data-aos-duration="1000" data-aos-delay="900">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OUR MENU Section -->
+        <section id="MENU" id="menu" class="py-20 bg-gray-50">
+            <div class="max-w-6xl mx-auto px-6 text-center">
+                
+                <!-- Heading -->
+                <h2 class="text-4xl font-bold text-gray-800 mb-12">OUR <span class="text-orange-500">MENU</span></h2>
+                
+                <!-- Appetizers -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-semibold text-green-600 mb-8">Appetizers</h3>
+
+                    <!-- Default Items wrapper -->
+                    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+                        <!--Item-->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/Canapes.jpeg" alt="Spring Rolls" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Canapes</h4>
+                                <p class="text-orange-500 font-bold">$5.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/meatballs.jpeg" alt="Garlic Bread" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Meatballs</h4>
+                                <p class="text-orange-500 font-bold">$4.50</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/crabcake.jpeg" alt="Bruschetta" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Crabcake</h4>
+                                <p class="text-orange-500 font-bold">$6.25</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Extra Appetizers (hidden by default) -->
+                    <div id="more-appetizers" class="hidden grid sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/deviledegg.jpeg" alt="Stuffed Mushrooms" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Stuffed Mushrooms</h4>
+                                <p class="text-orange-500 font-bold">$7.25</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- /Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/salad.jpeg" alt="Mozzarella Sticks" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Mozzarella Sticks</h4>
+                                <p class="text-orange-500 font-bold">$6.75</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Appetizers/Vegetable-Spring-Rolls-4-500x375.jpg" alt="Spring Rolls" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Spring Rolls</h4>
+                                <p class="text-orange-500 font-bold">$5.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- ✅ View More Button -->
+                    <div class="mt-8">
+                        <button
+                            class="toggle-btn bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md transition" data-target="more-appetizers">
+                            View More
+                        </button>
+                    </div>
+                </div>
+
+                 <!-- Main Dishes -->
+                <div class="mb-16">
+                    <h3 class="text-2xl font-semibold text-green-600 mb-8">Main Dishes</h3>
+
+                    <!-- Default Items -->
+                    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                        <img src="img/main-dish/basmatic.jpeg" alt="Grilled Chicken" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Basmatic Rice</h4>
+                                <p class="text-orange-500 font-bold">$12.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="bmenu-item /g-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/main-dish/friedrice.jpeg" alt="Pasta Alfredo" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Fried Rice</h4>
+                                <p class="text-orange-500 font-bold">$10.50</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/main-dish/jollofrice.jpeg" alt="Beef Steak" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">jollof Rice</h4>
+                                <p class="text-orange-500 font-bold">$15.00</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Extra Main Dishes (hidden by default) -->
+                    <div id="more-mains" class="hidden grid sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/main-dish/pasta.jpeg" alt="BBQ Ribs" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Pasta</h4>
+                                <p class="text-orange-500 font-bold">$14.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/main-dish/poundedyam.jpeg" alt="Seafood Platter" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">pounded Yam</h4>
+                                <p class="text-orange-500 font-bold">$18.75</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/main-dish/amala.jpeg" alt="Veggie Stir Fry" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Amala</h4>
+                                <p class="text-orange-500 font-bold">$11.50</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <!-- ✅ View More Button -->
+                    <div class="mt-8">
+                        <button
+                            class="toggle-btn bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md transition" data-target="more-mains">
+                            View More
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div>
+                    <h3 class="text-2xl font-semibold text-green-600 mb-8">Desserts</h3>
+
+                    <!-- Default Desserts -->
+                    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/brownies.jpeg" alt="Chocolate Cake" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Brownies</h4>
+                                <p class="text-orange-500 font-bold">$7.50</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/icecream.jpeg" alt="Ice Cream" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Ice Cream</h4>
+                                <p class="text-orange-500 font-bold">$4.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <!-- Item -->
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/pastries.jpeg" alt="Fruit Salad" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Pastries</h4>
+                                <p class="text-orange-500 font-bold">$5.75</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Extra Desserts (hidden by default) -->
+                    <div id="more-desserts" class="hidden grid sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/cookies.jpeg" alt="Cheesecake" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Cookies</h4>
+                                <p class="text-orange-500 font-bold">$6.50</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+
+                        <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/pie.jpeg" alt="Donuts" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Pie</h4>
+                                <p class="text-orange-500 font-bold">$3.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                         <div class="menu-item bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                            <img src="img/Desserts/salad.jpg" alt="Donuts" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-lg font-semibold">Salad</h4>
+                                <p class="text-orange-500 font-bold">$3.99</p>
+                                <button class="add-to-cart mt-2 bg-orange-500 text-white px-3 py-1 rounded-xl hover:bg-orange-600">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ View More Button -->
+                    <div class="mt-8">
+                        <button
+                            class="toggle-btn bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full shadow-md transition" data-target="more-desserts">
+                            View More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <!-- About Us Section -->
+        <section id="ABOUT" class="py-16 bg-gray-50 min-h-screen">
+            <div class="container mx-auto px-6 md:px-12 lg:px-20">
+                <!-- Title -->
+                <div class="text-center mb-12" data-aos="fade-down">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
+                        About <span class="text-orange-600">PamBite</span>
+                    </h2>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+                        At PamBite, we believe food is more than just a meal — it’s an experience. 
+                        Our mission is to bring delicious, fresh, and affordable dishes to your table, 
+                        inspired by flavors from around the world.
+                    </p>
+                </div>
+
+                <!-- Content -->
+                <div class="max-w-6xl mx-auto px-4">
+                    <div class="grid sm:grid-cols-2 items-center gap-8">
+                        <!-- Image -->
+                        <div data-aos="fade-up">
+                            <img src="img/chef.png" alt="Our Chef" class="rounded-2xlmax-w-sm mx-auto rounded-lg">
+                        </div>
+
+                        <!-- Text -->
+                        <div data-aos="fade-left">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Our Story</h3>
+                            <p class="text-gray-600 leading-relaxed mb-4">
+                                Founded with passion for great taste, PamBite started as a small kitchen dream. 
+                                Over the years, we’ve grown into a community favorite by blending tradition 
+                                with innovation in every dish we serve.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed mb-4">
+                                From appetizers to desserts, our chefs carefully select ingredients to ensure 
+                                every bite is bursting with flavor and freshness.
+                            </p>
+
+                            <a href="#MENU" 
+                            class="mt-4 inline-block bg-orange-600 text-white px-6 py-3 rounded-full shadow hover:bg-orange-700">Explore Our Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <!-- CONTACT SECTION -->
+        <section id="CONTACT" class="bg-gray-50 min-h-screen flex items-center">
+            <div class="max-w-3xl mx-auto px-6 w-full">
+                
+                <!-- Heading -->
+                <div class="text-center mb-12" data-aos="fade-up">
+                    <h2 class="text-3xl font-bold text-gray-800">Contact Me</h2>
+                    <p class="text-gray-600 mt-2">I’d love to hear from you! Get in touch using the form below.</p>
+                </div>
+
+                <!-- Contact Form -->
+                <form action="https://formspree.io/f/mnnbavkq" method="POST" 
+                    class="bg-white p-6 rounded-xl shadow-md space-y-6 min-h-[60vh] flex flex-col justify-center" data-aos="fade-left">
+
+                    <input type="text" name="name" placeholder="Your Name" required
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+
+                    <input type="email" name="email" placeholder="Your Email" required
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500">
+
+                    <textarea name="message" rows="6" placeholder="Your Message" required
+                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+
+                    <button type="submit"
+                    class="w-full bg-orange-500 text-white font-medium px-4 py-3 rounded-lg hover:bg-orange-600 transition" data-aos="zoom-in">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-900 text-gray-300 py-10">
+            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
+                <!-- Brand -->
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Pam<span class="text-orange-500">Bite</span></h2>
+                    <p class="mt-3 text-sm text-gray-400">
+                        Your one-stop destination for delicious meals, fresh flavors, and unforgettable dining experiences.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#HOME" class="hover:text-orange-500">Home</a></li>
+                        <li><a href="#MENU" class="hover:text-orange-500">Menu</a></li>
+                        <li><a href="#ABOUT" class="hover:text-orange-500">About</a></li>
+                        <li><a href="#CONTACT" class="hover:text-orange-500">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">Contact</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="https://www.google.com/maps?q=123+Food+Street,+Ibadan,+Nigeria" 
+                                target="_blank" 
+                                class="hover:text-orange-500">
+                                📍 123 Food Street, Ibadan, Nigeria
+                            </a>
+                        </li>
+                        <li><a href="tel:+2349073913329">📞 +234 907 391 3329</a></li>
+                        <li><a href="mailto:adeekopamilerin31@gmail.com">📧 adeekopamilerin31@gmail.com</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Links -->
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-3">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        
+                        <!-- Twitter / X -->
+                        <a href="https://x.com/home" target="_blank" rel="noopener" class="hover:text-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <title>X</title>
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.166 2.25H8.08l4.713 6.231 5.451-6.231z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Facebook -->
+                        <a href="https://facebook.com/" target="_blank" rel="noopener" class="hover:text-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <title>Facebook</title>
+                                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.325 24h11.49v-9.294H9.691v-3.622h3.124V8.413c0-3.1 1.894-4.787 4.66-4.787 1.325 0 2.463.099 2.795.143v3.24h-1.918c-1.505 0-1.797.716-1.797 1.767v2.317h3.587l-.467 3.622h-3.12V24h6.116C23.403 24 24 23.403 24 22.674V1.326C24 .597 23.403 0 22.675 0z"/>
+                            </svg>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/0xpamilerin/" target="_blank" rel="noopener" class="hover:text-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <title>Instagram</title>
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.056 1.97.246 2.428.415a4.92 4.92 0 011.772 1.151 4.92 4.92 0 011.151 1.772c.169.458.359 1.258.415 2.428.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.246 1.97-.415 2.428a4.92 4.92 0 01-1.151 1.772 4.92 4.92 0 01-1.772 1.151c-.458.169-1.258.359-2.428.415-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.246-2.428-.415a4.92 4.92 0 01-1.772-1.151 4.92 4.92 0 01-1.151-1.772c-.169-.458-.359-1.258-.415-2.428C2.175 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.85c.056-1.17.246-1.97.415-2.428a4.92 4.92 0 011.151-1.772 4.92 4.92 0 011.772-1.151c.458-.169 1.258-.359 2.428-.415C8.416 2.175 8.796 2.163 12 2.163zm0 3.675a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"/>
+                            </svg>
+                        </a>
+
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/+2349073913329" target="_blank" rel="noopener" class="hover:text-orange-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <title>WhatsApp</title>
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom -->
+            <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500">
+                © 2025 PamBite. All rights reserved.
+            </div>
+        </footer>
+
+        <!-- Cart Overlay -->
+        <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40">
+            <!-- Cart Drawer -->
+            <div id="cart-drawer" class="fixed top-0 right-0 w-80 max-w-full h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h2 class="text-lg font-semibold">Your Cart</h2>
+                    <button id="close-cart" class="text-gray-600 hover:text-red-500">✖</button>
+                </div>
+
+                <!-- Cart Items -->
+                <div id="cart-items" class="p-4 space-y-4 overflow-y-auto h-[70%]"></div>
+
+                <!-- Cart Footer -->
+                <div class="absolute bottom-0 w-full p-4 border-t bg-white">
+                    <div class="flex justify-between font-semibold mb-2">
+                        <span>Total:</span>
+                        <span id="cart-total">$0</span>
+                    </div>
+                    <a href="checkout.html">
+                        <button class="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600">Checkout</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+            
+        <script src="script.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>

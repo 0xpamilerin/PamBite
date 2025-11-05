@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Checkout - PamBite</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <!-- Wrapper -->
+    <div class="container mx-auto px-6 py-12 max-w-4xl">
+
+      <!-- Title -->
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">Checkout</h1>
+
+      <div class="grid md:grid-cols-2 gap-10"> 
+        <!-- Order Summary -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Your Order</h2>
+          <ul id="checkout-items" class="space-y-4">
+            <!-- Cart items will load here dynamically -->
+          </ul>
+          <div class="flex justify-between font-semibold border-t pt-4 mt-4">
+            <span>Total:</span>
+            <span id="checkout-total">$0</span>
+          </div>
+        </div>
+
+        <!-- Delivery Form -->
+        <div class="bg-white p-6 rounded-xl shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Delivery Info</h2>
+          <form id="checkout-form" class="space-y-4">
+            <input type="text" name="name" placeholder="Full Name" required
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500">
+            <input type="tel" name="phone" placeholder="Phone Number" required
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500">
+            <textarea name="address" rows="3" placeholder="Delivery Address" required
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-orange-500"></textarea>
+            
+            <button type="submit"
+              class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transition">
+              Place Order
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="w-full mx-auto mt-5 p-4">
+        <a href="index.html"><p class="text-center italic text-xl underline w-full hover:text-[#FFD700]">Return Home</p></a>
+      </div>
+    </div>
+
+    <script src="checkout.js"></script>
+  </body>
+</html>
